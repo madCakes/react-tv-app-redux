@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { addShowAction, removeShowAction } from '../../actions';
 
 import { FavouriteButton } from '../'
 
 const ShowCard = ({ data }) => {
 
-    const [saved, setSaved] = useState(false);
+    const saved = useSelector(state => state.watchlist.some(show => show.id == data.id))
+    const dispatch = useDispatch();
 
     function toggleSaved () {
-        setSaved(prev => !prev);
+
+        if (saved) {
+            dispatch(removeShowAction(data.id));
+        } else {
+            dispatch(addShowAction(data));
+        }
     }
 
     return <div className="show-card" role="figure">
